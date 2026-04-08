@@ -46,7 +46,7 @@ fun profileSection() {
     //Grå farve
     val gray = Color(0xFF7E7E7E)
 
-    Card(modifier = Modifier.fillMaxWidth().padding(16.dp), shape = RoundedCornerShape(20.dp), border = BorderStroke(1.5.dp,pink), colors = CardDefaults.cardColors(containerColor = Color.White)) {
+    Card(modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 100.dp), shape = RoundedCornerShape(20.dp), border = BorderStroke(1.5.dp,pink), colors = CardDefaults.cardColors(containerColor = Color.White)) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -93,3 +93,43 @@ fun ProfileRow(label: String, value: String) {
         Text(text = value, fontSize = 15.sp)
     }
 }
+
+@Preview
+@Composable
+fun premiumNotification() {
+    //Pink farve
+    val pink = Color(0xFFFF77B7)
+
+    //Grå farve
+    val gray = Color(0xFF7E7E7E)
+
+    Card(modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 350.dp), shape = RoundedCornerShape(20.dp), border = BorderStroke(1.5.dp, pink), colors = CardDefaults.cardColors(containerColor = Color.White)) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Row(modifier = Modifier.fillMaxWidth(),Arrangement.SpaceBetween,Alignment.CenterVertically) {
+                Text(text= "Change Notification", color=gray, fontSize = 14.sp)
+
+            }
+
+            Spacer(Modifier.height(12.dp))
+
+            Column(modifier = Modifier.fillMaxWidth(),Arrangement.SpaceBetween,Alignment.Start) {
+                Message("Level 1", "2")
+                Message("Level 2", "2")
+                Message("Level 3", "2")
+            }
+        }
+    }
+}
+
+@Composable
+fun Message(label: String, value: String) {
+    Column(
+        modifier = Modifier
+            .padding(vertical = 6.dp),
+         Arrangement.SpaceBetween
+    ) {
+        Text(text = label, fontWeight = FontWeight.Bold, fontSize = 15.sp)
+        Text(text = value, fontSize = 15.sp)
+    }
+}
+
