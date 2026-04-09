@@ -1,6 +1,7 @@
 package com.example.heart2heartnotfications.view
 
 import android.R.attr.text
+import android.widget.Space
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
@@ -40,7 +41,7 @@ fun settingsTitle() {
     //Pink farve
     val pink = Color(0xFFFF77B7)
 
-    Column(modifier = Modifier.fillMaxSize(),Arrangement.Top, Alignment.CenterHorizontally) {
+    Column(modifier = Modifier.fillMaxWidth(),Arrangement.Top, Alignment.CenterHorizontally) {
         Spacer(Modifier.height(50.dp))
         Text(text = "Settings", fontSize = 34.sp, color=pink)
     }
@@ -54,7 +55,7 @@ fun profileSection() {
     //Grå farve
     val gray = Color(0xFF7E7E7E)
 
-    Card(modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 100.dp), shape = RoundedCornerShape(20.dp), border = BorderStroke(1.5.dp,pink), colors = CardDefaults.cardColors(containerColor = Color.White)) {
+    Card(modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 8.dp), shape = RoundedCornerShape(20.dp), border = BorderStroke(1.5.dp,pink), colors = CardDefaults.cardColors(containerColor = Color.White)) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -126,9 +127,9 @@ fun premiumNotification() {
             Spacer(Modifier.height(12.dp))
 
             Column(modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.SpaceBetween, horizontalAlignment = Alignment.Start) {
-                Message("Level 1", standardText = "2")
-                Message("Level 2", standardText = "2")
-                Message("Level 3", standardText = "2")
+                Message("Level 1", standardText = "Jeg føler mig utryg!")
+                Message("Level 2", standardText = "Jeg føler mig forfulgt!")
+                Message("Level 3", standardText = "Ring 112!")
             }
         }
     }
@@ -140,19 +141,24 @@ fun Message(label: String, standardText: String) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 6.dp),
+            .padding(vertical = 9.dp),
             Arrangement.SpaceBetween,
             Alignment.Start
     ) {
         Text(text = label, fontWeight = FontWeight.Bold, fontSize = 15.sp)
+
+        Spacer(Modifier.height(6.dp))
+
         TextField(
             value = newText,
             onValueChange = { newText = it },
             singleLine = true,
             modifier = Modifier.width(300.dp),
             colors = TextFieldDefaults.colors(
-                unfocusedContainerColor = Color(0xFFFFE8F4),
-                focusedContainerColor = Color.Transparent
+                unfocusedContainerColor = Color(0xFFF0F0F0),
+                focusedContainerColor = Color(0xFFFFE8F4),
+                focusedIndicatorColor = Color(0xFFF0F0F0),
+                unfocusedIndicatorColor = Color.Transparent
             ),
             shape = RoundedCornerShape(100.dp),
 
@@ -160,3 +166,15 @@ fun Message(label: String, standardText: String) {
     }
 }
 
+@Preview
+@Composable
+fun setup() {
+    Column() {
+        Spacer(Modifier.height(50.dp))
+        settingsTitle()
+        Spacer(Modifier.height(16.dp))
+        profileSection()
+        Spacer(Modifier.height(16.dp))
+        premiumNotification()
+    }
+}

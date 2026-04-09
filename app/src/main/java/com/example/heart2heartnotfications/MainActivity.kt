@@ -18,31 +18,17 @@ import com.example.heart2heartnotfications.ui.theme.Heart2heartNotficationsTheme
 import com.example.heart2heartnotfications.view.premiumNotification
 import com.example.heart2heartnotfications.view.profileSection
 import com.example.heart2heartnotfications.view.settingsTitle
+import com.example.heart2heartnotfications.view.setup
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            settingsTitle()
-            profileSection()
-            premiumNotification()
+            setup()
         }
     }
 }
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    Heart2heartNotficationsTheme {
-        Greeting("Android")
-    }
-}
+
