@@ -34,6 +34,21 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Done
+import androidx.compose.material3.IconButton
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Check
+import android.content.Context
+import androidx.compose.ui.platform.LocalContext
 
 @Preview
 @Composable
@@ -127,42 +142,64 @@ fun premiumNotification() {
             Spacer(Modifier.height(12.dp))
 
             Column(modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.SpaceBetween, horizontalAlignment = Alignment.Start) {
-                Message("Level 1", standardText = "Jeg føler mig utryg!")
-                Message("Level 2", standardText = "Jeg føler mig forfulgt!")
-                Message("Level 3", standardText = "Ring 112!")
+                Message("Level 1", standardText = "Jeg føler mig utryg!", prefKey = "level_1")
+                Message("Level 2", standardText = "Jeg føler mig forfulgt!", prefKey = "level_2")
+                Message("Level 3", standardText = "Ring 112!", prefKey = "level_3")
             }
         }
     }
 }
 
+
 @Composable
-fun Message(label: String, standardText: String) {
-    var newText by remember { mutableStateOf(standardText) }
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 9.dp),
-            Arrangement.SpaceBetween,
-            Alignment.Start
-    ) {
+fun Message(label: String, standardText: String, prefKey: String) {
+    val context = LocalContext.current
+    val prefs = context.getSharedPreferences("heart2heart", Context.MODE_PRIVATE)
+
+    var newText by remember { mutableStateOf(prefs.getString(prefKey, standardText) ?: standardText) }
+    var saved by remember { mutableStateOf(false) }
+    val scope = rememberCoroutineScope()
+    val pink = Color(0xFFFF77B7)
+
+    Column(modifier = Modifier.fillMaxWidth().padding(vertical = 9.dp)) {
         Text(text = label, fontWeight = FontWeight.Bold, fontSize = 15.sp)
-
         Spacer(Modifier.height(6.dp))
-
-        TextField(
-            value = newText,
-            onValueChange = { newText = it },
-            singleLine = true,
-            modifier = Modifier.width(300.dp),
-            colors = TextFieldDefaults.colors(
-                unfocusedContainerColor = Color(0xFFF0F0F0),
-                focusedContainerColor = Color(0xFFFFE8F4),
-                focusedIndicatorColor = Color(0xFFF0F0F0),
-                unfocusedIndicatorColor = Color.Transparent
-            ),
-            shape = RoundedCornerShape(100.dp),
-
-        )
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            TextField(
+                value = newText,
+                onValueChange = { newText = it },
+                singleLine = true,
+                modifier = Modifier.weight(1f),
+                colors = TextFieldDefaults.colors(
+                    unfocusedContainerColor = Color(0xFFF0F0F0),
+                    focusedContainerColor = Color(0xFFFFE8F4),
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent
+                ),
+                shape = RoundedCornerShape(100.dp)
+            )
+            Spacer(Modifier.width(8.dp))
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                IconButton(onClick = {
+                    if (!saved) {
+                        prefs.edit().putString(prefKey, newText).apply() // ← gemmer
+                        saved = true
+                        scope.launch {
+                            delay(5000)
+                            saved = false
+                        }
+                    }
+                }) {
+                    Box(contentAlignment = Alignment.Center) {
+                        Icon(Icons.Default.Favorite, contentDescription = "Gem", tint = pink)
+                        if (saved) {
+                            Icon(Icons.Default.Check, contentDescription = "Gemt", tint = Color.White, modifier = Modifier.size(14.dp))
+                        }
+                    }
+                }
+                Text(text = if (saved) "Gemt!" else "Save!", fontSize = 11.sp, color = if (saved) pink else Color.Gray)
+            }
+        }
     }
 }
 
