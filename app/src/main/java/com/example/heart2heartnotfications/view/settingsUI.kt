@@ -197,7 +197,7 @@ fun Message(label: String, standardText: String, prefKey: String) {
                         }
                     }
                 }
-                Text(text = if (saved) "Gemt!" else "Save!", fontSize = 11.sp, color = if (saved) pink else Color.Gray)
+                Text(text = if (saved) "Saved!" else "Save!", fontSize = 11.sp, color = if (saved) pink else Color.Gray)
             }
         }
     }
